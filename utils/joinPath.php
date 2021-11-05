@@ -1,6 +1,6 @@
 <?php
 
-function join_path(array $path)
+function joinPath(array $path)
 {
 	$os = 				php_uname('s');
 	$separator = 	$os === "Windows NT" ? '\\' : '/';

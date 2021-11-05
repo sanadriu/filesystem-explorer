@@ -5,17 +5,25 @@ session_start();
 require_once("../config.php");
 require_once("../modules/validation.php");
 require_once("../modules/session.php");
-require_once("../utils/join_path.php");
-require_once("../utils/groupUploadedFilesContent.php");
+require_once("../utils/joinPath.php");
+require_once("../utils/getUploadedFiles.php");
+
+define("ROOT_DIRECTORY", "../drive");
 
 $errorList = [];
 $successList = [];
 
-if ($errorDirectoryPath = validatePath()) array_push($errorList,  $errorDirectoryPath);
+if (!isset($_POST["destpath"])) array_push($errorList, "Destination path is not specified.");
+if (!isset($_FILES["files"]))		array_push($errorList, "Files to upload have not been specified.");
 
-if (!$errorDirectoryPath) {
+if (!count($errorList)) {
+	$destpath = htmlentities(trim($_POST["destpath"]));
+	if ($errorDirectoryPath = validatePath($destpath)) array_push($errorList,  $errorDirectoryPath);
+}
+
+if (!count($errorList)) {
 	try {
-		$destpath = join_path(["../drive", $_POST["destpath"]]);
+		$destpath = joinPath([ROOT_DIRECTORY, $_POST["destpath"]]);
 
 		// Checks if parent does not exist
 		if (!file_exists($destpath)) {
@@ -27,20 +35,18 @@ if (!$errorDirectoryPath) {
 			throw new Exception("Parent item is not a directory.");
 		}
 
-		$files = groupUploadedFilesContent($_FILES['files']);
+		$files = getUploadedFiles($_FILES['files']);
 
 		$errorList = [];
 		$successList = [];
 
 		for ($i = 0; $i < count($files); $i++) {
-			echo 1;
-
 			if ($errorMessage = validateUploadedFile($files[$i])) {
 				array_push($errorList, $errorMessage);
 			} else {
 				$tmpname 	= $files[$i]['tmp_name'];
 				$filename = $files[$i]["name"];
-				$fullname = join_path([$destpath, $filename]);
+				$fullname = joinPath([$destpath, $filename]);
 
 				move_uploaded_file($tmpname, $fullname);
 

@@ -1,6 +1,6 @@
 <?php
 
-function groupUploadedFilesContent($files_post)
+function getUploadedFiles($files_post)
 {
 	$files = [];
 	$file_count = count($files_post['name']);
