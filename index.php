@@ -13,7 +13,7 @@ require_once("./layouts/modalRename.php");
 require_once("./layouts/modalUploadFiles.php");
 require_once("./modules/validation.php");
 
-if (!validateUserPath()) {
+if (!validateUrlFolderPath()) {
 	header("Location: ./index.php?path=/");
 	exit();
 }

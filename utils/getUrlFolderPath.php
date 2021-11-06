@@ -1,6 +1,6 @@
 <?php
 
-function getUserPath()
+function getUrlFolderPath()
 {
 	if (!isset($_GET["path"])) return "/";
 

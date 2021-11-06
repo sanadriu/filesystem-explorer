@@ -1,41 +1,54 @@
 <?php
 
-function getFolderContents($userpath)
+function getFolderContents($urlFolderPath)
 {
 	require_once("./utils/joinPath.php");
-	require_once("./utils/getFormattedSize.php");
+	require_once("./utils/getFileInfo.php");
 
 	$content = ["files" => [], "folders" => []];
-	$drivepath = joinPath([ROOT_DIRECTORY, $userpath]);
+	$folderPathFull = joinPath([ROOT_DIRECTORY, $urlFolderPath]);
 
 	try {
-		$items = scandir($drivepath, SCANDIR_SORT_ASCENDING);
+		$fileNames = scandir($folderPathFull, SCANDIR_SORT_ASCENDING);
 
-		foreach ($items as $item) {
-			if (!in_array($item, [".", ".."])) {
-				$fullpath = joinPath([$drivepath, $item]);
-				$hrefpath = joinPath([$userpath, $item]);
-				$name = 		basename($fullpath);
-				$size = 		getFormattedSize(filesize($fullpath));
-				$modtime = 	date("Y/m/d H:i:s", filemtime($fullpath));
-				$acctime = 	date("Y/m/d H:i:s", fileatime($fullpath));
+		foreach ($fileNames as $fileName) {
+			if (in_array($fileName, [".", ".."])) continue;
 
-				if (is_dir($fullpath)) {
-					array_push($content["folders"], ["path" => $hrefpath, "name" => $name, "size" => $size, "modtime" => $modtime, "acctime" => $acctime]);
-				} else {
-					$type =	pathinfo($fullpath, PATHINFO_EXTENSION);
-					array_push($content["files"], ["path" => $hrefpath, "name" => $name, "type" => $type, "size" => $size, "modtime" => $modtime, "acctime" => $acctime]);
-				}
-			}
+			$urlPath = 	joinPath([$urlFolderPath, $fileName]);
+			$filePath = joinPath([$folderPathFull, $fileName]);
+			$info =	getFileInfo($filePath);
+
+			$list = is_dir($filePath) ? "folders" : "files";
+
+			array_push(
+				$content[$list],
+				[
+					"path" => $urlPath,
+					"name" => $info["name"],
+					"size" => $info["size"],
+					"type" => $info["type"],
+					"modtime" => $info["modtime"],
+					"acctime" => $info["acctime"],
+				]
+			);
 		}
 
-		if ($userpath !== "/") {
-			$parentpath = preg_replace("/\/[^\/:*?\"<>|]*$/", "", $userpath);
-			array_push($content["folders"], ["path" => $parentpath, "name" => "..", "size" => null, "modtime" => null, "acctime" => null]);
+		if ($urlFolderPath !== "/") {
+			$parentpath = preg_replace("/\/[^\/:*?\"<>|]*$/", "", $urlFolderPath);
+
+			array_push($content["folders"], [
+				"path" => $parentpath,
+				"name" => "..",
+				"type" => "",
+				"size" => "",
+				"modtime" => "",
+				"acctime" => ""
+			]);
 		}
 
 		return $content;
 	} catch (Throwable $e) {
+		var_dump($e->getMessage());
 		return null;
 	}
 }

@@ -2,10 +2,10 @@
 
 function renderFolderContent()
 {
-	require_once("./utils/getUserPath.php");
+	require_once("./utils/getUrlFolderPath.php");
 	require_once("./utils/getFolderContents.php");
 
-	$userpath = getUserPath();
+	$userpath = getUrlFolderPath();
 	$contents = getFolderContents($userpath);
 ?>
 	<div class="folder-content text-light">
@@ -13,8 +13,9 @@ function renderFolderContent()
 			<table id="contents" class="table text-light w-100">
 				<thead>
 					<tr>
-						<th>Type</th>
+						<th></th>
 						<th>Name</th>
+						<th>Type</th>
 						<th>Size</th>
 						<th>Last access date</th>
 						<th>Last modification date</th>
@@ -26,6 +27,7 @@ function renderFolderContent()
 						<tr>
 							<td><img src="./assets/images/extensions/<?= $file["type"] ?>-svgrepo-com.svg" width="32" alt="<?= $file["type"] ?>" /></td>
 							<td><?= $file["name"] ?></td>
+							<td><?= $file["type"] ?></td>
 							<td><?= $file["size"] ?></td>
 							<td><?= $file["modtime"] ?></td>
 							<td><?= $file["acctime"] ?></td>
@@ -50,6 +52,7 @@ function renderFolderContent()
 							<td><img src="./assets/images/extensions/folder-svgrepo-com.svg" width="32" alt="folder" /></td>
 							<td><?= $folder["name"] ?></td>
 							<td><?= $folder["size"] ?></td>
+							<td>Folder</td>
 							<td><?= $folder["modtime"] ?></td>
 							<td><?= $folder["acctime"] ?></td>
 							<td>
@@ -64,14 +67,19 @@ function renderFolderContent()
 				</tbody>
 			</table>
 		<?php else : ?>
-			<div class="d-flex justify-content-between align-items-center p-3 bg-white border-bottom">
-				<span>Oops! Something went wrong :(</span>
+			<div class="d-flex justify-content-center align-items-center p-3 bg-white border-bottom">
+				<span class="text-dark">Oops! Something went wrong :(</span>
 			</div>
 		<?php endif ?>
 	</div>
 	<script>
 		$(document).ready(function() {
-			$('#contents').DataTable();
+			$('#contents').DataTable({
+				columnDefs: [{
+					targets: [0, -1],
+					orderable: false,
+				}]
+			});
 		});
 	</script>
 <?php
