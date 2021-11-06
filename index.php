@@ -8,6 +8,8 @@ require_once("./layouts/aside.php");
 require_once("./layouts/folderContents.php");
 require_once("./layouts/modalAddFile.php");
 require_once("./layouts/modalAddFolder.php");
+require_once("./layouts/modalDelete.php");
+require_once("./layouts/modalRename.php");
 require_once("./layouts/modalUploadFiles.php");
 require_once("./modules/validation.php");
 
@@ -38,6 +40,8 @@ if (!validateUserPath()) {
 </head>
 
 <body class="body min-vh-100" style="background-image: url('./assets/images/Polygon\ Luminary.svg');">
+	<?php renderModalRename(); ?>
+	<?php renderModaldelete(); ?>
 	<?php renderModalAddFile(); ?>
 	<?php renderModalAddFolder(); ?>
 	<?php renderModalUploadFiles(); ?>
