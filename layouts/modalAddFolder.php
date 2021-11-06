@@ -13,7 +13,7 @@ function renderModalAddFolder()
 				</div>
 				<div class="modal-body">
 					<div class="d-flex flex-column justify-content-center align-items-center">
-						<form class="p-2 m-2 d-flex flex-column align-items-center" style="width: 20rem" action="./actions/createDirectory.action.php" method="POST">
+						<form class="p-2 m-2 d-flex flex-column align-items-center" style="width: 20rem" action="createDirectory.action.php" method="POST">
 							<label class="form-label w-100" for="input_dirname">Directory name</label>
 							<input class="form-control mb-3" type="text" name="dirname" id="input_dirname" required placeholder="Directory name" />
 							<label class="form-label w-100" for="input_destpath">Destination path</label>

@@ -1,25 +1,39 @@
 <?php
 
+require_once("./utils/joinPath.php");
+
+function validateUserPath()
+{
+	if (!isset($_GET["path"])) 		return false;
+
+	$userpath = htmlentities(trim($_GET["path"]));
+	$fullpath = joinPath([ROOT_DIRECTORY, $userpath]);
+
+	if (!validatePath($fullpath)) return false;
+	if (!is_dir($fullpath)) 		 	return false;
+
+	return true;
+}
+
 function validatePath($path)
 {
-	if (!preg_match("/^\/?([^\/:*?\"<>|]+\/?)*$/", $path)) 	return "Directory path is invalid.";
-	if (preg_match("/\/\.\./", $path)) 											return "Directory path does not allow reverse traversal.";
+	if (!preg_match("/^\.?\/?([^\/:*?\"<>|]+\/?)*$/", $path)) 	return false;
+	if (preg_match("/\.{2}\//", $path)) 											return false;
 
-	return null;
+	return true;
 }
 
 function validateName($name)
 {
-	if (!preg_match("/^[^\/\\:*?\"<>|]+$/", $name)) return "Name for the new file or folder is invalid.";
+	if (!preg_match("/^[^\/\\:*?\"<>|]+$/", $name)) return false;
 
-	return null;
+	return true;
 }
 
 function validateUploadedFile($file)
 {
-	$name = 			$file['name'];
-	$type = 			$file['type'];
-	$errorCode = 	$file['error'];
+	$type = $file['type'];
+	$code = $file['error'];
 
 	$FILE_TYPES = [
 		'application/msword',
@@ -40,26 +54,8 @@ function validateUploadedFile($file)
 		'video/mp4',
 	];
 
-	$PHP_FILE_UPLOAD_ERRORS = [
-		0 => "File $name uploaded successfully.",
-		1 => "File $name exceeds the upload_max_filesize directive in php.ini.",
-		2 => "File $name exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.",
-		3 => "File $name was only partially uploaded.",
-		4 => "No file was uploaded.",
-		6 => "Missing a temporary folder.",
-		7 => "Failed to write file to disk.",
-		8 => "A PHP extension stopped the file upload.",
-	];
+	if ($code) 													return $code;
+	if (!in_array($type, $FILE_TYPES)) 	return 9;
 
-	if ($errorCode) {
-		$errorMessage = $PHP_FILE_UPLOAD_ERRORS[$errorCode];
-		return $errorMessage;
-	}
-
-	if (!in_array($type, $FILE_TYPES)) {
-		$errorMessage = "File $name has invalid type ($type).";
-		return $errorMessage;
-	}
-
-	return null;
+	return 0;
 }

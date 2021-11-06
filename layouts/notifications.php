@@ -25,7 +25,7 @@ function renderNotifications()
 		<?php endforeach ?>
 	<?php endif ?>
 
-	<? if (!$errorList && !$successList) : ?>
+	<?php if (!$errorList && !$successList) : ?>
 		<div class="alert alert-info mb-0 p-3 text-center" role="alert">There's no event!</div>
 	<?php endif ?>
 

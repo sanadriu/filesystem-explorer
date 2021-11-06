@@ -2,35 +2,33 @@
 
 session_start();
 
-require_once("../config.php");
-require_once("../modules/validation.php");
-require_once("../modules/session.php");
-require_once("../utils/joinPath.php");
-
-define("ROOT_DIRECTORY", "../drive");
+require_once("./config.php");
+require_once("./modules/validation.php");
+require_once("./modules/session.php");
+require_once("./utils/joinPath.php");
 
 $errorList = [];
 $successList = [];
 
-if (!isset($_POST["dirname"]))  array_push($errorList, "Folder name not specified.");
+if (!isset($_POST["filename"])) array_push($errorList, "File name not specified.");
 if (!isset($_POST["destpath"])) array_push($errorList, "Destination path not specified.");
 
-if (!count($ErrorList)) {
-	$dirname =  htmlentities(trim($_POST["dirname"]));
+if (!count($errorList)) {
+	$filename = htmlentities(trim($_POST["filename"]));
 	$destpath = htmlentities(trim($_POST["destpath"]));
 
-	if ($errorDestPath = validatePath($destpath)) array_push($errorList, $errorDestPath);
-	if ($errorDirName =  validateName($dirname))  array_push($errorList, $errorDirName);
+	if (!validateName($filename)) array_push($errorList, "File name is invalid.");
+	if (!validatePath($destpath)) array_push($errorList, "Destination path is invalid.");
 }
 
-if (!count($ErrorList)) {
+if (!count($errorList)) {
 	try {
 		$destpath = joinPath([ROOT_DIRECTORY, $destpath]);
-		$fullpath = joinPath([$destpath, $_POST["dirname"]]);
+		$fullpath = joinPath([$destpath, $filename . ".txt"]);
 
-		// Checks if folder already exists
+		// Checks if file already exists
 		if (file_exists($fullpath)) {
-			throw new Exception("Directory already exists.");
+			throw new Exception("File already exists.");
 		}
 
 		// Checks if destination does not exist
@@ -43,9 +41,10 @@ if (!count($ErrorList)) {
 			throw new Exception("Parent item is not a directory.");
 		}
 
-		mkdir($fullpath);
+		$file = fopen($fullpath, "w");
+		fclose($file);
 
-		array_push($successList, "Directory has been created.");
+		array_push($successList, "File has been created.");
 	} catch (Throwable $e) {
 		array_push($errorList, $e->getMessage());
 	}

@@ -13,7 +13,7 @@ function renderModalUploadFiles()
 				</div>
 				<div class="modal-body">
 					<div class="d-flex flex-column justify-content-center align-items-center">
-						<form action="./actions/uploadFile.action.php" method="POST" enctype="multipart/form-data">
+						<form action="uploadFile.action.php" method="POST" enctype="multipart/form-data">
 							<div class="form-group">
 								<label class="form-label w-100" for="input_destpath">Destination path</label>
 								<input class="form-control" type="text" name="destpath" id="input_destpath" placeholder="/" />

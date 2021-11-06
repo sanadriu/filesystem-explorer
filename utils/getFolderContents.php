@@ -5,7 +5,7 @@ function getFolderContents($userpath)
 	require_once("./utils/joinPath.php");
 
 	$content = ["files" => [], "folders" => []];
-	$dirpath = joinPath([$userpath, $item]);
+	$dirpath = joinPath([ROOT_DIRECTORY, $userpath]);
 
 	try {
 		$items = scandir($dirpath, SCANDIR_SORT_ASCENDING);

@@ -2,13 +2,12 @@
 
 session_start();
 
-require_once("../config.php");
-require_once("../modules/validation.php");
-require_once("../modules/session.php");
-require_once("../utils/joinPath.php");
-require_once("../utils/getUploadedFiles.php");
-
-define("ROOT_DIRECTORY", "../drive");
+require_once("./config.php");
+require_once("./modules/validation.php");
+require_once("./modules/session.php");
+require_once("./utils/joinPath.php");
+require_once("./utils/getUploadedFiles.php");
+require_once("./utils/getUploadError.php");
 
 $errorList = [];
 $successList = [];
@@ -18,7 +17,8 @@ if (!isset($_FILES["files"]))		array_push($errorList, "Files to upload have not 
 
 if (!count($errorList)) {
 	$destpath = htmlentities(trim($_POST["destpath"]));
-	if ($errorDirectoryPath = validatePath($destpath)) array_push($errorList,  $errorDirectoryPath);
+
+	if (!validatePath($destpath)) array_push($errorList, "Destination path is invalid.");
 }
 
 if (!count($errorList)) {
@@ -41,17 +41,19 @@ if (!count($errorList)) {
 		$successList = [];
 
 		for ($i = 0; $i < count($files); $i++) {
-			if ($errorMessage = validateUploadedFile($files[$i])) {
-				array_push($errorList, $errorMessage);
+			$file = $files[$i];
+			$code = validateUploadedFile($file);
+
+			if ($code > 0) {
+				array_push($errorList, getUploadError($file, $code));
 			} else {
-				$tmpname 	= $files[$i]['tmp_name'];
-				$filename = $files[$i]["name"];
+				$tmpname 	= $file['tmp_name'];
+				$filename = $file["name"];
 				$fullname = joinPath([$destpath, $filename]);
 
 				move_uploaded_file($tmpname, $fullname);
 
-				$successMessage = "File " . $files[$i]["name"] . " has been uploaded succesfully.";
-				array_push($successList, $successMessage);
+				array_push($successList, "File $filename has been uploaded succesfully.");
 			}
 		}
 	} catch (Throwable $e) {
