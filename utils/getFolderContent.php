@@ -1,6 +1,6 @@
 <?php
 
-function getFolderContents($urlFolderPath)
+function getFolderContent($urlFolderPath)
 {
 	require_once("./utils/joinPath.php");
 	require_once("./utils/getFileInfo.php");
@@ -37,7 +37,7 @@ function getFolderContents($urlFolderPath)
 			$parentpath = preg_replace("/\/[^\/:*?\"<>|]*$/", "", $urlFolderPath);
 
 			array_push($content["folders"], [
-				"path" => $parentpath,
+				"path" => $parentpath ? $parentpath : "/",
 				"name" => "..",
 				"type" => "",
 				"size" => "",

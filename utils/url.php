@@ -6,3 +6,10 @@ function getUrlFolderPath()
 
 	return htmlentities(trim($_GET["path"]));;
 }
+
+function getUrlSearch()
+{
+	if (!isset($_GET["search"])) return null;
+
+	return htmlentities(trim($_GET["search"]));;
+}

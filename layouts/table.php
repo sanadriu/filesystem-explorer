@@ -1,12 +1,13 @@
 <?php
 
-function renderFolderContent()
+function renderTable()
 {
-	require_once("./utils/getUrlFolderPath.php");
-	require_once("./utils/getFolderContents.php");
+	require_once("./utils/url.php");
+	require_once("./utils/getFolderContent.php");
+	require_once("./utils/getSearchResults.php");
 
-	$userpath = getUrlFolderPath();
-	$contents = getFolderContents($userpath);
+	if ($search = getUrlSearch()) 										$contents = getSearchResults($search);
+	if (!$search && $folderPath = getUrlFolderPath())	$contents = getFolderContent($folderPath);
 ?>
 	<div class="folder-content text-light">
 		<?php if ($contents) : ?>

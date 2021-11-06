@@ -6,8 +6,8 @@ function validateUrlFolderPath()
 {
 	if (!isset($_GET["path"]) || !$_GET["path"]) return true;
 
-	$userpath = htmlentities(trim($_GET["path"]));
-	$fullpath = joinPath([ROOT_DIRECTORY, $userpath]);
+	$urlFolderPath = htmlentities(trim($_GET["path"]));
+	$fullpath = joinPath([ROOT_DIRECTORY, $urlFolderPath]);
 
 	if (!validatePath($fullpath)) return false;
 	if (!is_dir($fullpath)) 		 	return false;

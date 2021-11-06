@@ -5,7 +5,7 @@ session_start();
 require_once("./config.php");
 require_once("./layouts/header.php");
 require_once("./layouts/aside.php");
-require_once("./layouts/folderContents.php");
+require_once("./layouts/table.php");
 require_once("./layouts/modalAddFile.php");
 require_once("./layouts/modalAddFolder.php");
 require_once("./layouts/modalDelete.php");
@@ -51,7 +51,7 @@ if (!validateUrlFolderPath()) {
 			<?php renderAside(); ?>
 		</div>
 		<div class="col-12 col-md-8 col-lg-9 col-xl-10 p-3 d-flex flex-column">
-			<?php renderFolderContent(); ?>
+			<?php renderTable(); ?>
 		</div>
 	</div>
 
