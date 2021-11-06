@@ -32,11 +32,11 @@ if (!validateUserPath()) {
 	<script crossorigin="anonymous" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 	<script crossorigin="anonymous" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 	<script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"></script>
+	<script src="./assets/js/init.js" type="module"></script>
 	<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" />
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 	<link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 	<link href="./assets/styles/css/main.css" rel="stylesheet" />
-
 </head>
 
 <body class="body min-vh-100" style="background-image: url('./assets/images/Polygon\ Luminary.svg');">
@@ -54,6 +54,7 @@ if (!validateUserPath()) {
 			<?php renderFolderContent(); ?>
 		</div>
 	</div>
+
 </body>
 
 </html>
