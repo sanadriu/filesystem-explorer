@@ -12,7 +12,7 @@ try {
 	// Do file stuff here :D
 	//...
 
-	array_push($successList, "File has been renamed");
+	array_push($successList, "File has been deleted");
 } catch (Throwable $e) {
 	array_push($successList, $e->getMessage());
 }

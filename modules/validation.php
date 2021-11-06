@@ -4,7 +4,7 @@ require_once("./utils/joinPath.php");
 
 function validateUserPath()
 {
-	if (!isset($_GET["path"])) 		return false;
+	if (!isset($_GET["path"]) || !$_GET["path"]) 		return false;
 
 	$userpath = htmlentities(trim($_GET["path"]));
 	$fullpath = joinPath([ROOT_DIRECTORY, $userpath]);

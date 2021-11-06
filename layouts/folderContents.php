@@ -29,7 +29,20 @@ function renderFolderContent()
 							<td><?= $file["size"] ?></td>
 							<td><?= $file["modtime"] ?></td>
 							<td><?= $file["acctime"] ?></td>
-							<td>--</td>
+							<td>
+								<div class="d-flex justify-content-center align-items center gap-2">
+									<button data-action="delete" data-payload="<?= $file["path"] ?>">
+										<span class="material-icons">
+											delete
+										</span>
+									</button>
+									<button>
+										<span class="material-icons">
+											drive_file_rename_outline
+										</span>
+									</button>
+								</div>
+							</td>
 						</tr>
 					<?php endforeach ?>
 					<?php foreach ($contents["folders"] as $folder) : ?>
@@ -39,7 +52,13 @@ function renderFolderContent()
 							<td><?= $folder["size"] ?></td>
 							<td><?= $folder["modtime"] ?></td>
 							<td><?= $folder["acctime"] ?></td>
-							<td>--</td>
+							<td>
+								<a href="index.php?path=<?= $folder["path"] ?>">
+									<span class="material-icons">
+										north_east
+									</span>
+								</a>
+							</td>
 						</tr>
 					<?php endforeach ?>
 				</tbody>
